@@ -24,7 +24,8 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    const userCollection = client.db("task").collection('users')
+    const userCollection = client.db("task").collection('users');
+    const taskCollection = client.db("task").collection("allTask")
 
     // save user
     app.post('/users', async (req, res) => {
@@ -37,6 +38,13 @@ async function run() {
 
       const result = await userCollection.insertOne(user);
       res.send(result);
+    })
+
+    // save all task
+    app.post('/task', async (req, res) => {
+      const task = req.body;
+      const result = await taskCollection.insertOne(task);
+      res.send(result)
     })
 
 
