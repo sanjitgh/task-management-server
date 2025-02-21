@@ -71,20 +71,16 @@ async function run() {
 
     // update task
     app.patch('/task/:id', async (req, res) => {
-      const id = req.params.id;
-      const item = req.body;
-      const filter = { _id: new ObjectId(id) };
-      const updatedDoc = {
-        $set: {
-          title: item.title,
-          description: item.description,
-          category: item.category,
-        }
-      }
-      const result = await taskCollection.updateOne(filter, updatedDoc)
-      res.send(result)
-    })
+      const { id } = req.params;
+      const { title, description, category, order } = req.body;
 
+      const result = await taskCollection.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { title, description, category, order } }
+      );
+
+      res.send(result);
+    });
 
   } finally {
     // Ensures that the client will close when you finish/error
